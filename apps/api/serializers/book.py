@@ -28,17 +28,23 @@ class BorrowedBookSerializer(serializers.ModelSerializer):
             'borrowed_date',
         ]
 
+    def create(self, validated_data):
+        return super().create(validated_data)
+
 
 class UserBooksSerializer(serializers.ModelSerializer):
     books = BorrowedBookSerializer(
         many=True,
         read_only=True,
-        source='borrowedbook_set.',
+        source='borrowedbook_set',
     )
 
     class Meta:
         model = Client
-        fields = ['user', 'books']
+        fields = [
+            'user',
+            'books',
+        ]
 
 class BookUsersSerializer(serializers.ModelSerializer):
     users = ClientSerializer(
@@ -49,4 +55,8 @@ class BookUsersSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Book
-        fields = ['title', 'author', 'users']
+        fields = [
+            'title',
+            'author',
+            'users',
+        ]
