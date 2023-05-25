@@ -1,11 +1,7 @@
-from rest_framework import mixins
-from rest_framework.viewsets import GenericViewSet
-
 from rest_framework.viewsets import ModelViewSet
-
+from apps.api.serializers.book import BookSerializer
 
 from book.models import Book
-from book.serializers import BookSerializer
 
 class BookViewSet(ModelViewSet):
     queryset = Book.objects.all()

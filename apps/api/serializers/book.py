@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from authlibrary.models import Book, Client
+from authlibrary.models import Book
 
 class BookSerializer(serializers.ModelSerializer):
     class Meta:

@@ -1,7 +1,7 @@
 from rest_framework.viewsets import ModelViewSet
-
+from apps.api.serializers.authlibrary import ClientSerializer
 from authlibrary.models import Client
-from authlibrary.serializers import ClientSerializer
+
 
 
 class ClientViewset(ModelViewSet):
