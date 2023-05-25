@@ -25,7 +25,7 @@ class BorrowedBookSerializer(serializers.ModelSerializer):
         fields = [
             'client',
             'book',
-            'borrow_date',
+            'borrowed_date',
         ]
 
 
