@@ -1,9 +1,18 @@
-from django.urls import path
-from .views import BookList, BookDetail, ClientList, ClientDetail
+from django.urls import path, include
+from apps.api.views.authlibrary import ClientViewset
+from apps.api.views.book import BookViewSet
+
+from rest_framework import routers
+
+# authlibrary app urls
+client_router = routers.DefaultRouter()
+client_router.register('client', ClientViewset, basename='client')
+
+# book app urls
+book_router = routers.DefaultRouter()
+book_router.register('book', BookViewSet, basename='book')
 
 urlpatterns = [
-    path('books/', BookList.as_view(), name='book-list'),
-    path('books/<int:pk>/', BookDetail.as_view(), name='book-detail'),
-    path('clients/', ClientList.as_view(), name='client-list'),
-    path('clients/<int:pk>/', ClientDetail.as_view(), name='client-detail'),
+    path('', include(client_router.urls)),
+    path('', include(book_router.urls)),
 ]

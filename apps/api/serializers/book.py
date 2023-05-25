@@ -1,7 +1,19 @@
 from rest_framework import serializers
-from authlibrary.models import Book
+from apps.authlibrary.models import Book
 
 class BookSerializer(serializers.ModelSerializer):
+    clients = serializers.StringRelatedField(many=True)
+
     class Meta:
         model = Book
-        fields = '__all__'
+        fields = [
+            'id',
+            'title',
+            'author',
+            'description',
+            'is_active',
+            'borrowing_price',
+            'quantity',
+
+            'clients',
+        ]
