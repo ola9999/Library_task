@@ -1,5 +1,7 @@
 from django.db import models
 
+from apps.authlibrary.models import Client
+
 class Book(models.Model):
     title = models.CharField(max_length=100)
     author = models.CharField(max_length=100)
@@ -12,11 +14,18 @@ class Book(models.Model):
     )
     quantity = models.PositiveIntegerField()
 
-    def borrow_book(self):
-        if self.quantity > 0:
-            self.quantity -= 1
-            if self.quantity == 0:
-                self.is_active = False
-            self.save()
-            return True
-        return False
+
+class BorrowedBook(models.Model):
+    client = models.ForeignKey(Client, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    borrowed_date = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        if self.book.quantity > 0:
+            self.book.quantity -= 1
+            if self.book.quantity == 0:
+                self.book.is_active = False
+            self.book.save()
+            super().save(*args, **kwargs)
+        else:
+            raise ValueError("Book is not available")
