@@ -14,11 +14,25 @@ class Book(models.Model):
     )
     quantity = models.PositiveIntegerField()
 
+    def __str__(self):
+        return self.title
+
 
 class BorrowedBook(models.Model):
-    client = models.ForeignKey(Client, on_delete=models.CASCADE)
-    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    client = models.ForeignKey(
+        Client,
+        on_delete=models.CASCADE,
+        related_name='borrowedbook_set',
+    )
+    book = models.ForeignKey(
+        Book,
+        on_delete=models.CASCADE,
+        related_name='borrowing_user_set',
+    )
     borrowed_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.client} borrowed {self.book}'
 
     def save(self, *args, **kwargs):
         if self.book.quantity > 0:

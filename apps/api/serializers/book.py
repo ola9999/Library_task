@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from apps.book.models import Book,BorrowedBook
+from apps.authlibrary.models import Client
+from apps.api.serializers.authlibrary import ClientSerializer
 
 
 class BookSerializer(serializers.ModelSerializer):
@@ -16,8 +18,8 @@ class BookSerializer(serializers.ModelSerializer):
         ]
 
 
-
 class BorrowedBookSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = BorrowedBook
         fields = [
@@ -25,3 +27,26 @@ class BorrowedBookSerializer(serializers.ModelSerializer):
             'book',
             'borrow_date',
         ]
+
+
+class UserBooksSerializer(serializers.ModelSerializer):
+    books = BorrowedBookSerializer(
+        many=True,
+        read_only=True,
+        source='borrowedbook_set.',
+    )
+
+    class Meta:
+        model = Client
+        fields = ['user', 'books']
+
+class BookUsersSerializer(serializers.ModelSerializer):
+    users = ClientSerializer(
+        many=True,
+        read_only=True,
+        source='borrowing_user_set.user.username',
+    )
+
+    class Meta:
+        model = Book
+        fields = ['title', 'author', 'users']

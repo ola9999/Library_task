@@ -3,7 +3,6 @@ from apps.api.serializers.authlibrary import ClientSerializer
 from apps.authlibrary.models import Client
 
 
-
 class ClientViewset(ModelViewSet):
     queryset = Client.objects.all()
     serializer_class = ClientSerializer

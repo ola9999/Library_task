@@ -1,15 +1,31 @@
-# from django.contrib import admin
+from django.contrib import admin
+from apps.book.models import Book,BorrowedBook
 
-# from apps.book.models import Book
+
+class BookAdmin(admin.ModelAdmin):
+
+    list_display = (
+        'title' ,
+        'author' ,
+        'description' ,
+        'is_active' ,
+    )
+
+admin.site.register(Book, BookAdmin)
 
 
-# class BookAdmin(admin.ModelAdmin):
+class BorrowedBookAdmin(admin.ModelAdmin):
 
-#     list_display = (
-#         'title' ,
-#         'author' ,
-#         'description' ,
-#         'is_active' ,
-#     )
+    list_display = (
+        'client' ,
+        'book' ,
+        'borrowed_date' ,
+    )
 
-# admin.site.register(Book, BookAdmin)
+    def client(self,obj):
+        return obj.client.username
+
+    def book(self,obj):
+        return obj.book.title
+
+admin.site.register(BorrowedBook, BorrowedBookAdmin)
