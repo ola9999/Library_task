@@ -5,6 +5,7 @@ from apps.api.serializers.authlibrary import ClientSerializer
 
 
 class BookSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Book
         fields = [
@@ -19,17 +20,16 @@ class BookSerializer(serializers.ModelSerializer):
 
 
 class BorrowedBookSerializer(serializers.ModelSerializer):
-
+    """
+    Serializers for make borrowing process
+    """
     class Meta:
         model = BorrowedBook
         fields = [
-            'client',
-            'book',
+            'client_id',
+            'book_id',
             'borrowed_date',
         ]
-
-    def create(self, validated_data):
-        return super().create(validated_data)
 
 
 class UserBooksSerializer(serializers.ModelSerializer):
@@ -38,12 +38,17 @@ class UserBooksSerializer(serializers.ModelSerializer):
         read_only=True,
         source='borrowedbook_set',
     )
-
+    user_details = ClientSerializer(
+        source= 'user_id',
+        read_only=True,
+    )
     class Meta:
         model = Client
         fields = [
-            'user',
+            'user_id',
             'books',
+            # Extra fields
+            'user_details',
         ]
 
 class BookUsersSerializer(serializers.ModelSerializer):
@@ -52,11 +57,16 @@ class BookUsersSerializer(serializers.ModelSerializer):
         read_only=True,
         source='borrowing_user_set.user.username',
     )
+    book_details = BookSerializer(
+        source= 'id',
+        read_only=True,
+    )
 
     class Meta:
         model = Book
         fields = [
-            'title',
-            'author',
+            'id',
             'users',
+            # Extra fields
+            'book_details',
         ]

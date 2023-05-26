@@ -19,12 +19,11 @@ client_router.register('user_books', UserBooksViewSet, basename='user-books')
 # book app urls
 book_router = routers.DefaultRouter()
 book_router.register('', BookViewSet, basename='book')
-# book_router.register('borrowing', BorrowedBookViewSet, basename='borrowing-books')
 book_router.register('book_users', BookUsersViewSet, basename='book-users')
 
 router = routers.DefaultRouter()
-
 router.register('borrowing', BorrowedBookViewSet, basename='borrowing-books')
+
 
 urlpatterns = [
     path('client/', include(client_router.urls)),

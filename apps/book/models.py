@@ -19,12 +19,12 @@ class Book(models.Model):
 
 
 class BorrowedBook(models.Model):
-    client = models.ForeignKey(
+    client_id = models.ForeignKey(
         Client,
         on_delete=models.CASCADE,
         related_name='borrowedbook_set',
     )
-    book = models.ForeignKey(
+    book_id = models.ForeignKey(
         Book,
         on_delete=models.CASCADE,
         related_name='borrowing_user_set',
@@ -35,11 +35,11 @@ class BorrowedBook(models.Model):
         return f'{self.client} borrowed {self.book}'
 
     def save(self, *args, **kwargs):
-        if self.book.quantity > 0:
-            self.book.quantity -= 1
-            if self.book.quantity == 0:
-                self.book.is_active = False
-            self.book.save()
+        if self.book_id.quantity > 0:
+            self.book_id.quantity -= 1
+            if self.book_id.quantity == 0:
+                self.book_id.is_active = False
+            self.book_id.save()
             super().save(*args, **kwargs)
         else:
             raise ValueError("Book is not available")

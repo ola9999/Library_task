@@ -2,7 +2,7 @@ from django.conf import settings
 from django.db import models
 
 class Client(models.Model):
-    user = models.OneToOneField(
+    user_id = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         default=1,
         on_delete=models.CASCADE,
@@ -10,4 +10,4 @@ class Client(models.Model):
     )
 
     def __str__(self):
-        return self.user.username
+        return self.user_id.username
