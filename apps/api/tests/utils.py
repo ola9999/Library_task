@@ -221,8 +221,7 @@ class ListRetrieveTestMixin(CreateUserMixin):
         expected_status_code=status.HTTP_200_OK,
     ):
         response = client.get(self.list_endpoint)
-        print(response.json())
-        # self.assertEqual(response.status_code, expected_status_code)
+        self.assertEqual(response.status_code, expected_status_code)
 
     def run_test_retrieve(
         self,
@@ -234,5 +233,4 @@ class ListRetrieveTestMixin(CreateUserMixin):
         get -> retrieve ->  Instance Detail test .
         """
         response = client.get(self.detail_endpoint)
-        print(response.json())
-        # self.assertEqual(response.status_code, expected_status_code)
+        self.assertEqual(response.status_code, expected_status_code)
