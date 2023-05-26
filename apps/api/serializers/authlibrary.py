@@ -18,7 +18,10 @@ class ClientSerializer(serializers.ModelSerializer):
         read_only=True,
         source='user_id',
     )
-
+    user_id = serializers.PrimaryKeyRelatedField(
+        queryset= User.objects.all(),
+        write_only=True
+    )
     class Meta:
         model = Client
         fields = (

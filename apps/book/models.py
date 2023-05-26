@@ -22,12 +22,12 @@ class BorrowedBook(models.Model):
     client_id = models.ForeignKey(
         Client,
         on_delete=models.CASCADE,
-        related_name='borrowedbook_set',
+        related_name='borrowing_user_set',
     )
     book_id = models.ForeignKey(
         Book,
         on_delete=models.CASCADE,
-        related_name='borrowing_user_set',
+        related_name='borrowedbook_set',
     )
     borrowed_date = models.DateTimeField(auto_now_add=True)
 

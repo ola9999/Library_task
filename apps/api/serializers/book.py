@@ -42,15 +42,13 @@ class BorrowedBookSerializer(serializers.ModelSerializer):
 
 
 class UserBooksSerializer(serializers.ModelSerializer):
-    books = BorrowedBookSerializer(
+    books = BookSerializer(
         many=True,
         read_only=True,
-        source='borrowedbook_set',
+        source='borrowedbook_set.book_id',
     )
-    user_details = ClientSerializer(
-        source= 'user_id',
-        read_only=True,
-    )
+    user_details = serializers.SerializerMethodField()
+
     class Meta:
         model = Client
         fields = [
@@ -60,16 +58,16 @@ class UserBooksSerializer(serializers.ModelSerializer):
             'user_details',
         ]
 
+    def get_user_details(self,obj):
+        return ClientSerializer(obj).data
+
 class BookUsersSerializer(serializers.ModelSerializer):
     users = ClientSerializer(
         many=True,
         read_only=True,
-        source='borrowing_user_set.user.username',
+        source='borrowing_user_set.user_id.username',
     )
-    book_details = BookSerializer(
-        source= 'id',
-        read_only=True,
-    )
+    book_details = serializers.SerializerMethodField()
 
     class Meta:
         model = Book
@@ -79,3 +77,6 @@ class BookUsersSerializer(serializers.ModelSerializer):
             # Extra fields
             'book_details',
         ]
+
+    def get_book_details(self,obj):
+        return BookSerializer(obj).data

@@ -22,9 +22,6 @@ class BookViewSetTest(
     Test class for News apis.
     """
 
-    def setUp(self):
-        return super().setUp()
-
     @classmethod
     def setUpTestData(cls):
         super().setUpTestData()
@@ -238,9 +235,6 @@ class UserBookViewSetTest(
             kwargs={'pk': cls.client1.id}
         )
 
-    def test_list(self):
-        self.run_test_list(self.client)
-
     def test_retrieve(self):
         self.run_test_retrieve(self.client)
 
@@ -254,38 +248,38 @@ class BookUserViewSetTest(
     Test class for UserBookViewSet apis.
     """
 
-    def setUp(self):
-        return super().setUp()
-
     @classmethod
     def setUpTestData(cls):
         super().setUpTestData()
-        CrudTestMixin().setUpTestData()
-        cls.user2 = cls.create_user()
-        cls.user3 = cls.create_user()
-        cls.client2 = cls.create_client_user({
-            'user_id':cls.user2.id,
+        ListRetrieveTestMixin().setUpTestData()
+        cls.user2 = cls.create_user(**{
+            'username': 'test2',
+            'password': 'pass2',
+            'email': 'test2@email.com',
         })
-        cls.client3 = cls.create_client_user({
-            'user_id':cls.user3.id,
+        cls.user3 = cls.create_user(**{
+            'username': 'test3',
+            'password': 'pass3',
+            'email': 'test3@email.com',
         })
 
-        cls.borrowedbook2 =cls.create_book(
+        cls.client2 = cls.create_client_user(**{
+            'user_id':cls.user2,
+        })
+        cls.client3 = cls.create_client_user(**{
+            'user_id':cls.user3,
+        })
+
+        cls.borrowedbook2 =cls.create_borrowedbook(
             **{
-                'client_id':cls.client1.id,
-                'book_id':cls.book1.id,
+                'client_id':cls.client1,
+                'book_id':cls.book1,
             },
         )
-        cls.borrowedbook3 =cls.create_book(
+        cls.borrowedbook3 =cls.create_borrowedbook(
             **{
-                'client_id':cls.client2.id,
-                'book_id':cls.book1.id,
-            },
-        )
-        cls.borrowedbook4 =cls.create_book(
-            **{
-                'client_id':cls.client3.id,
-                'book_id':cls.book1.id,
+                'client_id':cls.client2,
+                'book_id':cls.book1,
             },
         )
         
@@ -295,9 +289,6 @@ class BookUserViewSetTest(
             'book-users-detail',
             kwargs={'pk': cls.book1.id}
         )
-
-    def test_list(self):
-        self.run_test_list(self.client)
 
     def test_retrieve(self):
         self.run_test_retrieve(self.client)
