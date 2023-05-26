@@ -26,7 +26,7 @@ book_router.register('', BookViewSet, basename='book')
 book_router.register('book_users', BookUsersViewSet, basename='book-users')
 
 router = routers.DefaultRouter()
-router.register('borrowing', BorrowedBookViewSet, basename='borrowing-books')
+router.register('', BorrowedBookViewSet, basename='borrowing-books')
 
 
 urlpatterns = [
@@ -36,5 +36,5 @@ urlpatterns = [
     path('client/', include(client_router.urls)),
  
     path('book/', include(book_router.urls)),
-    path('', include(router.urls)),
+    path('borrowing/', include(router.urls)),
 ]

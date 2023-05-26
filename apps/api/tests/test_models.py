@@ -7,7 +7,7 @@ from apps.authlibrary.models import Client
 from apps.book.models import Book,BorrowedBook
 
 
-class NewsAppTest(
+class ClientBookModelsTest(
     CreateClientUserBookTestMixin,
     TestCase,
 ):
@@ -17,23 +17,6 @@ class NewsAppTest(
     def setUpTestData(cls):
         """ Setup News model test data """
         super().setUpTestData()
-
-        # Creation of Client :
-        # Create image file.
-
-        # Create audio file.
-
-        cls.assertTrue(
-            self=cls,
-            expr=isinstance(cls.book1, Book),
-        )
-        cls.assertTrue(
-            self=cls,
-        )
-        cls.assertTrue(
-            self=cls,
-            expr=isinstance(cls.borrowedbook1, BorrowedBook),
-        )
 
     def test_client_creation(self):
         """ test the creation of client object """

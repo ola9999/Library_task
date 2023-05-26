@@ -1,30 +1,32 @@
 from rest_framework import serializers
 from apps.authlibrary.models import Client
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
 
-User = get_user_model()
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = (
+            'username',
+            'email',
+        )
 
 
 class ClientSerializer(serializers.ModelSerializer):
-    username = serializers.PrimaryKeyRelatedField(
-        source= 'user_id.username',
+    details = UserSerializer(
         read_only=True,
-    )
-    email = serializers.PrimaryKeyRelatedField(
-        source= 'user_id.email',
-        read_only=True,
+        source='user_id',
     )
 
     class Meta:
         model = Client
-        fields = [
+        fields = (
             'id',
             'user_id',
             # Extra fields
-            'username',
-            'email',
-        ]
+            'details',
+        )
 
 
 
@@ -35,14 +37,15 @@ class RegisterClientSerializer(
     """
     Serializer for registering a new Client user.
     """
+    username = serializers.CharField(write_only=True)
     password = serializers.CharField(write_only=True)
 
     class Meta:
         model = Client
-        fields = [
+        fields = (
         'username',
         'password',
-        ]
+        )
 
     def create(self, validated_data):
         """
@@ -53,7 +56,7 @@ class RegisterClientSerializer(
             'username': validated_data['username'],
             'password': password,
         }
-        user = User.objects.create_user(**user_data)
+        user = get_user_model().objects.create_user(**user_data)
         user.set_password(password)
         user.save()
 

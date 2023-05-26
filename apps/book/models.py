@@ -32,7 +32,7 @@ class BorrowedBook(models.Model):
     borrowed_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'{self.client} borrowed {self.book}'
+        return f'{self.client_id} borrowed {self.book_id}'
 
     def save(self, *args, **kwargs):
         if self.book_id.quantity > 0:

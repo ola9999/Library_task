@@ -1,10 +1,11 @@
 from django.conf import settings
 from django.db import models
+from django.contrib.auth.models import User
+
 
 class Client(models.Model):
     user_id = models.OneToOneField(
-        settings.AUTH_USER_MODEL,
-        default=1,
+        User,
         on_delete=models.CASCADE,
         related_name='client_user',
     )

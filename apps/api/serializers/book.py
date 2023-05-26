@@ -2,7 +2,7 @@ from rest_framework import serializers
 from apps.book.models import Book,BorrowedBook
 from apps.authlibrary.models import Client
 from apps.api.serializers.authlibrary import ClientSerializer
-from datetime import datetime
+
 
 class BookSerializer(serializers.ModelSerializer):
 
@@ -18,12 +18,14 @@ class BookSerializer(serializers.ModelSerializer):
             'quantity',
         ]
 
-    def validate(self,data):
-        if not data['book_id'].is_active:
-            raise serializers.ValidationError(
-                "Book is not available",
-            )
-        return data
+    def validate(self, attrs):
+        if self.context['request'].method == 'POST':
+            active= attrs.get('is_active',None)
+            if not active:
+                raise serializers.ValidationError(
+                    "Book is not available",
+                )
+        return super().validate(attrs)
 
 
 class BorrowedBookSerializer(serializers.ModelSerializer):
