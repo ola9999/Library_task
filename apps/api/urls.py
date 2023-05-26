@@ -1,5 +1,8 @@
 from django.urls import path, include
-from apps.api.views.authlibrary import ClientViewset
+from apps.api.views.authlibrary import (
+    ClientViewset,
+    RegisterClientView,
+)
 from apps.api.views.book import (
     BookViewSet,
     BookUsersViewSet,
@@ -7,6 +10,7 @@ from apps.api.views.book import (
     BorrowedBookViewSet,
 )
 from rest_framework import routers
+from rest_framework.authtoken.views import ObtainAuthToken
 
 # authlibrary app urls
 client_router = routers.DefaultRouter()
@@ -26,7 +30,11 @@ router.register('borrowing', BorrowedBookViewSet, basename='borrowing-books')
 
 
 urlpatterns = [
+    path('register/', RegisterClientView.as_view(), name='register'),
+    path('login/', ObtainAuthToken.as_view(), name='api_token_auth'),
+
     path('client/', include(client_router.urls)),
+ 
     path('book/', include(book_router.urls)),
     path('', include(router.urls)),
 ]

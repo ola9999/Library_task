@@ -3,7 +3,14 @@
 from django.conf import settings
 from django.db import migrations, models
 import django.db.models.deletion
+from django.contrib.auth.models import User
 
+def create_admin_user(apps, schema_editor):
+    User.objects.create_superuser(
+        username='admin',
+        email='admin@admin.com',
+        password='password',
+    )
 
 class Migration(migrations.Migration):
 
@@ -14,6 +21,8 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
+        migrations.RunPython(create_admin_user),# creating admin user
+
         migrations.CreateModel(
             name='Client',
             fields=[
